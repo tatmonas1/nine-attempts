@@ -12,7 +12,7 @@ display:flex;
 align-items:center;
 justify-content:center;
 background:white;
-font-size:100px;
+font-size:120px;
 font-family: Arial, sans-serif;
 }
 </style>
@@ -27,9 +27,9 @@ font-family: Arial, sans-serif;
         async src="https://gc.zgo.at/count.js"></script>
 
 <script>
-async function fetchCount() {
+async function update() {
     try {
-        // официальный публичный endpoint GoatCounter
+        // правильный публичный endpoint GoatCounter
         const res = await fetch("https://nineattempts.goatcounter.com/counter.json");
         const data = await res.json();
 
@@ -40,8 +40,8 @@ async function fetchCount() {
     }
 }
 
-fetchCount();
-setInterval(fetchCount, 3000);
+update();
+setInterval(update, 3000);
 </script>
 
 </body>
