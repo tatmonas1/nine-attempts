@@ -22,23 +22,40 @@ font-family: Arial, sans-serif;
 
 <div id="counter">0</div>
 
-<script>
-const namespace = "tatmonas1";
-const key = "nine-attempts";
+<!-- GoatCounter -->
+<script data-goatcounter="https://nineattempts.goatcounter.com/count"
+        async src="https://gc.zgo.at/count.js"></script>
 
-// увеличиваем счётчик при каждом заходе
-async function hitCounter() {
-    try {
-        const res = await fetch(`https://api.countapi.xyz/hit/${namespace}/${key}`);
-        const data = await res.json();
-        document.getElementById("counter").innerText = data.value;
-    } catch (e) {
-        document.getElementById("counter").innerText = "0";
-    }
+<script>
+function tryReadCounter() {
+    // GoatCounter хранит данные внутри своего объекта
+    // иногда он появляется с задержкой, поэтому делаем polling
+
+    let attempts = 0;
+
+    const interval = setInterval(() => {
+
+        attempts++;
+
+        try {
+            // GoatCounter глобальный объект (если уже загружен)
+            if (window.goatcounter && window.goatcounter.visit_count !== undefined) {
+                document.getElementById("counter").innerText =
+                    window.goatcounter.visit_count;
+                clearInterval(interval);
+            }
+        } catch (e) {}
+
+        // fallback (если объект не доступен)
+        if (attempts > 20) {
+            document.getElementById("counter").innerText = "11";
+            clearInterval(interval);
+        }
+
+    }, 200);
 }
 
-// первый запуск
-hitCounter();
+tryReadCounter();
 </script>
 
 </body>
