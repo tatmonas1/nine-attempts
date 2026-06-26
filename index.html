@@ -23,17 +23,12 @@ font-family: Arial, sans-serif;
 <div id="counter">0</div>
 
 <script>
-let count = localStorage.getItem("counter_fix");
+let count = localStorage.getItem("safe_counter");
 
-if (!count) {
-    count = 0;
-} else {
-    count = parseInt(count);
-}
+if (!count) count = 0;
+count = Number(count) + 1;
 
-count = count + 1;
-
-localStorage.setItem("counter_fix", count);
+localStorage.setItem("safe_counter", count);
 
 document.getElementById("counter").innerText = count;
 </script>
