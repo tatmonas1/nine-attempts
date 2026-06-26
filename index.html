@@ -12,7 +12,7 @@ display:flex;
 align-items:center;
 justify-content:center;
 background:white;
-font-size:120px;
+font-size:140px;
 font-family: Arial, sans-serif;
 }
 </style>
@@ -22,40 +22,23 @@ font-family: Arial, sans-serif;
 
 <div id="counter">0</div>
 
-<!-- GoatCounter -->
-<script data-goatcounter="https://nineattempts.goatcounter.com/count"
-        async src="https://gc.zgo.at/count.js"></script>
-
 <script>
-function tryReadCounter() {
-    // GoatCounter хранит данные внутри своего объекта
-    // иногда он появляется с задержкой, поэтому делаем polling
+// локально-устойчивый счётчик (работает всегда)
+let count = localStorage.getItem("nine_attempts_count");
 
-    let attempts = 0;
-
-    const interval = setInterval(() => {
-
-        attempts++;
-
-        try {
-            // GoatCounter глобальный объект (если уже загружен)
-            if (window.goatcounter && window.goatcounter.visit_count !== undefined) {
-                document.getElementById("counter").innerText =
-                    window.goatcounter.visit_count;
-                clearInterval(interval);
-            }
-        } catch (e) {}
-
-        // fallback (если объект не доступен)
-        if (attempts > 20) {
-            document.getElementById("counter").innerText = "11";
-            clearInterval(interval);
-        }
-
-    }, 200);
+if (!count) {
+    count = 0;
+} else {
+    count = parseInt(count);
 }
 
-tryReadCounter();
+// увеличиваем при каждом заходе
+count = count + 1;
+
+localStorage.setItem("nine_attempts_count", count);
+
+// показываем
+document.getElementById("counter").innerText = count;
 </script>
 
 </body>
