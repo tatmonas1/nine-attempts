@@ -12,7 +12,7 @@ display:flex;
 align-items:center;
 justify-content:center;
 background:white;
-font-size:140px;
+font-size:120px;
 font-family: Arial, sans-serif;
 }
 </style>
@@ -23,8 +23,7 @@ font-family: Arial, sans-serif;
 <div id="counter">0</div>
 
 <script>
-// локально-устойчивый счётчик (работает всегда)
-let count = localStorage.getItem("nine_attempts_count");
+let count = localStorage.getItem("counter_fix");
 
 if (!count) {
     count = 0;
@@ -32,12 +31,10 @@ if (!count) {
     count = parseInt(count);
 }
 
-// увеличиваем при каждом заходе
 count = count + 1;
 
-localStorage.setItem("nine_attempts_count", count);
+localStorage.setItem("counter_fix", count);
 
-// показываем
 document.getElementById("counter").innerText = count;
 </script>
 
