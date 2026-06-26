@@ -12,32 +12,36 @@ display:flex;
 align-items:center;
 justify-content:center;
 background:white;
-font-size:80px;
+font-size:100px;
 font-family: Arial, sans-serif;
 }
 </style>
-
 </head>
 
 <body>
 
 <div id="counter">0</div>
 
-<script>
-const endpoint = "https://nineattempts.goatcounter.com/counter/TOTAL.json";
+<!-- GoatCounter -->
+<script data-goatcounter="https://nineattempts.goatcounter.com/count"
+        async src="https://gc.zgo.at/count.js"></script>
 
-async function update() {
+<script>
+async function fetchCount() {
     try {
-        const res = await fetch(endpoint);
+        // официальный публичный endpoint GoatCounter
+        const res = await fetch("https://nineattempts.goatcounter.com/counter.json");
         const data = await res.json();
-        document.getElementById("counter").innerText = data.count || 0;
+
+        document.getElementById("counter").innerText =
+            data.count || 0;
     } catch (e) {
         document.getElementById("counter").innerText = "0";
     }
 }
 
-update();
-setInterval(update, 3000);
+fetchCount();
+setInterval(fetchCount, 3000);
 </script>
 
 </body>
