@@ -22,26 +22,45 @@ font-family: Arial, sans-serif;
 
 <div id="counter">0</div>
 
-<!-- GoatCounter -->
-<script data-goatcounter="https://nineattempts.goatcounter.com/count"
-        async src="https://gc.zgo.at/count.js"></script>
-
 <script>
-async function update() {
-    try {
-        // правильный публичный endpoint GoatCounter
-        const res = await fetch("https://nineattempts.goatcounter.com/counter.json");
-        const data = await res.json();
+const repo = "nine-attempts";
+const user = "tatmonas1";
 
-        document.getElementById("counter").innerText =
-            data.count || 0;
+// получить текущее значение
+async function getCount() {
+    const res = await fetch(`https://raw.githubusercontent.com/${user}/${repo}/main/count.json`);
+    const data = await res.json();
+    return data.count || 0;
+}
+
+// обновить счётчик
+async function updateCount() {
+    let count = await getCount();
+
+    document.getElementById("counter").innerText = count;
+
+    // увеличиваем счётчик
+    count++;
+
+    // сохраняем обратно через GitHub (через API невозможно без токена,
+    // поэтому делаем хитрость: через GitHub commit вручную не надо)
+
+    // ВАЖНО: обновление делается через отдельный "ping" файл ниже
+    fetch(`https://api.countapi.xyz/hit/tatmonas1/nine-attempts`);
+}
+
+async function loadLive() {
+    try {
+        const res = await fetch("https://api.countapi.xyz/get/tatmonas1/nine-attempts");
+        const data = await res.json();
+        document.getElementById("counter").innerText = data.value;
     } catch (e) {
         document.getElementById("counter").innerText = "0";
     }
 }
 
-update();
-setInterval(update, 3000);
+loadLive();
+setInterval(loadLive, 2000);
 </script>
 
 </body>
