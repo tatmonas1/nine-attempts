@@ -7,14 +7,13 @@
 <style>
 html,body{
 margin:0;
-width:100%;
 height:100%;
 display:flex;
 align-items:center;
 justify-content:center;
 background:white;
+font-size:80px;
 font-family: Arial, sans-serif;
-font-size: 60px;
 }
 </style>
 
@@ -25,20 +24,20 @@ font-size: 60px;
 <div id="counter">0</div>
 
 <script>
-async function loadCounter() {
-    try {
-        const res = await fetch("https://nineattempts.goatcounter.com/counter/totals.json?path=/nine-attempts/");
-        const data = await res.json();
+const endpoint = "https://nineattempts.goatcounter.com/counter/TOTAL.json";
 
-        document.getElementById("counter").innerText =
-            data.count || 0;
+async function update() {
+    try {
+        const res = await fetch(endpoint);
+        const data = await res.json();
+        document.getElementById("counter").innerText = data.count || 0;
     } catch (e) {
         document.getElementById("counter").innerText = "0";
     }
 }
 
-loadCounter();
-setInterval(loadCounter, 5000);
+update();
+setInterval(update, 3000);
 </script>
 
 </body>
