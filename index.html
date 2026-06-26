@@ -23,35 +23,13 @@ font-family: Arial, sans-serif;
 <div id="counter">0</div>
 
 <script>
-const repo = "nine-attempts";
-const user = "tatmonas1";
+const namespace = "tatmonas1";
+const key = "nine-attempts";
 
-// получить текущее значение
-async function getCount() {
-    const res = await fetch(`https://raw.githubusercontent.com/${user}/${repo}/main/count.json`);
-    const data = await res.json();
-    return data.count || 0;
-}
-
-// обновить счётчик
-async function updateCount() {
-    let count = await getCount();
-
-    document.getElementById("counter").innerText = count;
-
-    // увеличиваем счётчик
-    count++;
-
-    // сохраняем обратно через GitHub (через API невозможно без токена,
-    // поэтому делаем хитрость: через GitHub commit вручную не надо)
-
-    // ВАЖНО: обновление делается через отдельный "ping" файл ниже
-    fetch(`https://api.countapi.xyz/hit/tatmonas1/nine-attempts`);
-}
-
-async function loadLive() {
+// увеличиваем счётчик при каждом заходе
+async function hitCounter() {
     try {
-        const res = await fetch("https://api.countapi.xyz/get/tatmonas1/nine-attempts");
+        const res = await fetch(`https://api.countapi.xyz/hit/${namespace}/${key}`);
         const data = await res.json();
         document.getElementById("counter").innerText = data.value;
     } catch (e) {
@@ -59,8 +37,8 @@ async function loadLive() {
     }
 }
 
-loadLive();
-setInterval(loadLive, 2000);
+// первый запуск
+hitCounter();
 </script>
 
 </body>
